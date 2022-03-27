@@ -11,9 +11,6 @@ from app import app
 
 server = app.server
 
-image_filename = '/Users/constance/Desktop/REDEV/App/data/logo_ecn.jpg'
-encoded_image = base64.b64encode(open(image_filename, 'rb').read())
-
 app.layout = html.Div(
     [
         dcc.Location(id="url", refresh=False),

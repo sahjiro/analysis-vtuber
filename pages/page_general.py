@@ -7,11 +7,11 @@ import pandas as pd
 import plotly.express as px
 
 # Import des bases de données
-dataframe_channelFR = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/dataframe_list_channel_FR_all.csv')
+dataframe_channelFR = pd.read_csv('../data/dataframe_list_channel_FR_all.csv')
 dataframe_channelFR['name'] = [x.split()[0] for x in dataframe_channelFR["name"]]
-dataframe_list_video = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/dataframe_list_video_FR_all.csv')
+dataframe_list_video = pd.read_csv('../data/dataframe_list_video_FR_all.csv')
 dataframe_list_video['channelTitle'] = [x.split()[0] for x in dataframe_list_video["channelTitle"]]
-dataframe_videogames = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/jeux_twitch.csv')
+dataframe_videogames = pd.read_csv('../data/jeux_twitch.csv')
 
 # Traitement
 ranking_per_subscriber = dataframe_channelFR.sort_values(by='subscriberCount')[-20:]
