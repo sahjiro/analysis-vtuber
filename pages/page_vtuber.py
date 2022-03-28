@@ -13,13 +13,13 @@ import numpy as np
 from app import app
 
 # Import des bases de données
-dataframe_channelFR = pd.read_csv('../data/dataframe_list_channel_FR_all.csv')
+dataframe_channelFR = pd.read_csv('./data/dataframe_list_channel_FR_all.csv')
 dataframe_channelFR['name'] = [x.split()[0] for x in dataframe_channelFR["name"]]
-dataframe_list_video = pd.read_csv('../data/dataframe_list_video_FR_all.csv')
+dataframe_list_video = pd.read_csv('./data/dataframe_list_video_FR_all.csv')
 dataframe_list_video['channelTitle'] = [x.split()[0] for x in dataframe_list_video["channelTitle"]]
-dataframe_videogames = pd.read_csv('../data/jeux_twitch.csv')
-dataframe_channelFR_Twitch = pd.read_csv('../data/json_id_streamer.csv')
-dataframe_list_video_Twitch = pd.read_csv('../data/json_video_streamer.csv')
+dataframe_videogames = pd.read_csv('./data/jeux_twitch.csv')
+dataframe_channelFR_Twitch = pd.read_csv('./data/json_id_streamer.csv')
+dataframe_list_video_Twitch = pd.read_csv('./data/json_video_streamer.csv')
 
 # Sélection du VTuber
 options = []

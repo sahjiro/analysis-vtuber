@@ -83,6 +83,10 @@ def layout():
                                 dbc.Row(
                                     dcc.Markdown(
                                         """
+                                        Les VTubers sont des diffuseurs de divertissement qui utilisent différentes plateformes comme Youtube, Twitch, TikTok, etc… Leurs particularités est qu’ils utilisent des logiciels générant des avatars 2D, 3D qui vont collés aux mouvements des avatars à ceux des VTubers. 
+
+                                        En ce qui concerne le phénomène VTuber, nous pouvons faire un bref historique mettant en avant l'émergence de ce dernier ainsi qu’une description brève de son histoire. Tout commence en 2010, avec la première publication d’un avatar 3D, Super Sonico, mascotte de la chaîne YouTube de visual novels : Nitroplus. Ensuite, en 2011, nous avons Ami Yamato qui met en ligne sa première vidéo dans laquelle un avatar virtuel animé parle à la caméra. Puis en 2014, le lancement du premier programme hebdomadaire de météo en direct avec l’avatar Airi. Finalement, en 2016, nous avons la première youtubeuse virtuelle, Kizuna AI que l’on peut voir Figure 1, qui a atteint une popularité internationale. 
+
                                         """,
                                         style={"margin": "0 10px"},
                                     )
@@ -102,6 +106,8 @@ def layout():
                                         Données récupérées par l'API Youtube et l'API Twitch.
                                         
                                         Chiffre du graphique : https://www.animenewsnetwork.com/fr/interest/2021-10-20/une-societe-de-classement-de-donnees-repertorie-pus-de-16-000-youtubeurs-virtuels/.178647
+                                        
+                                        Github : https://github.com/sahjiro/analysis-vtuber
                                         """,
                                         style={"margin": "0 10px"},
                                     )
