@@ -2,7 +2,7 @@
 This repository aims at giving a public access to the dashboard developped to see interactive data analysis of french VTubers.
 
 In order to make it work on your own machine, follow these steps :
-- install all required packages (requirements file is to come)
+- install all required packages : pip -r requirements.txt
 - git clone the repository in a local folder of your machine
 - verify that the paths are the good ones
 - then, from your terminal launch the command line : python index.py
