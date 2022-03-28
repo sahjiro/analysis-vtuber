@@ -4,22 +4,23 @@
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 from app import app
+import dash_cytoscape as cyto
 
 # Import des bases de données
-dataframe_channelFR = pd.read_csv('./data/dataframe_list_channel_FR_all.csv')
+dataframe_channelFR = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/dataframe_list_channel_FR_all.csv')
 dataframe_channelFR['name'] = [x.split()[0] for x in dataframe_channelFR["name"]]
-dataframe_list_video = pd.read_csv('./data/dataframe_list_video_FR_all.csv')
+dataframe_list_video = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/dataframe_list_video_FR_all.csv')
 dataframe_list_video['channelTitle'] = [x.split()[0] for x in dataframe_list_video["channelTitle"]]
-dataframe_videogames = pd.read_csv('./data/jeux_twitch.csv')
-dataframe_channelFR_Twitch = pd.read_csv('./data/json_id_streamer.csv')
-dataframe_list_video_Twitch = pd.read_csv('./data/json_video_streamer.csv')
+dataframe_videogames = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/jeux_twitch.csv')
+dataframe_channelFR_Twitch = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/json_id_streamer.csv')
+dataframe_list_video_Twitch = pd.read_csv('/Users/constance/Desktop/REDEV/App/data/json_video_streamer.csv')
 
 # Sélection du VTuber
 options = []
@@ -58,6 +59,36 @@ def vtuber_information(vtuber):
                 html.P("Nombre de vues cumulées: " + str(channel.viewCount.values[0]))
             ]
         )
+
+def social_link(vtuber):
+    lien_social = {
+        "vtuber" : dataframe_list_video.channelTitle.unique(),
+        "occurence" : np.zeros(dataframe_list_video.channelTitle.unique().shape)
+    }
+    dataframe_lien_social = pd.DataFrame.from_dict(data=lien_social, orient='index').transpose()
+
+    # On regarde l'ensemble des vidéos du VTuber et on regarde la description si l'on trouve un mot-clé
+    data = dataframe_list_video[dataframe_list_video['channelTitle']==vtuber]
+    for i in data.index:
+        description = data["description"][i]
+        if type(description)!=float:
+            for j in range (len(dataframe_lien_social["vtuber"])):
+                c = dataframe_lien_social["vtuber"].values[j]
+                if description.find(c)!=-1 and c!=vtuber:
+                    dataframe_lien_social["occurence"].values[j] += 1
+    return(dataframe_lien_social)
+            
+def network(vtuber):
+    dataframe_lien_social = social_link(vtuber)
+    elements = []
+    elements.append({'data' : {'id' : vtuber, 'label' : vtuber}})
+    for i in range (len(dataframe_lien_social["vtuber"])):
+        if dataframe_lien_social["occurence"].values[i] != 0:
+            value = dataframe_lien_social["vtuber"].values[i]
+            elements.append({'data' : {'id' : value, 'label' : value}})
+    for i in range (1,len(elements)):
+        elements.append({'data':{'source' : vtuber, 'target' : elements[i]['data']['label']}})
+    return(elements)
 
 def layout():
     return [
@@ -131,6 +162,16 @@ def layout():
                                     id="live_vod",
                                     className="dash-bootstrap"
                                 )   
+                            ]),
+                            dbc.Col([
+                                html.H5('Réseau social'),
+                                cyto.Cytoscape(
+                                    id='cytoscape',
+                                    layout={
+                                        'name': 'concentric',
+                                    },
+                                    style={'width': '100%', 'height': '400px'}
+                                )  
                             ])
                         ]),
                     ]
@@ -222,3 +263,8 @@ def update_vtuber_graphs(vtuber):
     )
 
     return fig_publi_trend, fig_videogames, fig_ratio
+
+@app.callback(Output(component_id='cytoscape', component_property='elements'), Input(component_id='vtuber', component_property='value'))
+def update_cytoscape(vtuber):
+    elements = network(vtuber)
+    return(elements)
